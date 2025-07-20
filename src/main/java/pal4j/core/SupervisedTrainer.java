@@ -1,22 +1,20 @@
 package pal4j.core;
 
 import pal4j.datautils.BufferedDataset;
-import pal4j.datautils.DataRecord;
 import pal4j.datautils.EvaluationMetric;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
 
-public class Trainer{
+public class SupervisedTrainer {
 
     public PassiveAggressiveModel model;
     public BufferedDataset data;
     public EvaluationMetric metric;
 
 
-    public Trainer(
+    public SupervisedTrainer(
             PassiveAggressiveModel model,
             BufferedDataset data,
             EvaluationMetric metric

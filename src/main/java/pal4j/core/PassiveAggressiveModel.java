@@ -17,6 +17,7 @@ public abstract class PassiveAggressiveModel {
         this.setTauCalculator();
     }
 
+
     public abstract double calculateScore(double[] x);
     public abstract double predict(double score);
     protected abstract double sufferLoss(double score, double y);
