@@ -1,21 +1,21 @@
 /**
- * Class implementing sensitivity metric.
+ * Class implementing specificity metric.
  * @author Diego Hernández Jiménez
  */
 package pal4j.datautils;
 
-public class Sensitivity extends EvaluationMetric {
+public class Specificity extends EvaluationMetric {
 
-    public Sensitivity() {}
+    public Specificity() {};
 
     /**
-     * Accumulation step. Adds one unit to the global store if the prediction is positive (label = 1) and correct and updates the count of observations.
+     * Accumulation step. Adds one unit to the global store if the prediction is negative (label = -1) and correct and updates the count of observations.
      * @param y Target label.
      * @param prediction Predicted label.
      */
     @Override
     public void accumulate(double y, double prediction) {
-        if (y == 1) {
+        if (y == -1) {
             ++this.totalObservations;
             if (y == prediction) {
                 ++this.metricCumSum;
@@ -25,6 +25,6 @@ public class Sensitivity extends EvaluationMetric {
 
     @Override
     public String getName() {
-        return "Sensitivity (recall)";
+        return "Specificity";
     }
 }

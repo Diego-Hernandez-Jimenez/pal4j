@@ -2,42 +2,47 @@ package pal4j;
 
 
 import pal4j.core.*;
-import pal4j.datautils.Accuracy;
-import pal4j.datautils.BufferedDataset;
-import pal4j.datautils.MAE;
+import pal4j.datautils.*;
 import pal4j.nonlinear.GaussianKernel;
 import pal4j.nonlinear.KernelPassiveAggressiveRegressor;
 
 import java.util.Arrays;
 
 public class Main {
+    
+    public static final String basePath = "C:/Users/Diego/javaprojects/processed_datasets/";
 
-    public static void occupancyExample() {
+    public static void exampleOccupancy() {
+
+        System.out.println("Occupancy");
+
         var features = new String[] {"Temperature", "Humidity", "Light", "CO2", "HumidityRatio"};
         var trainData= new BufferedDataset(
-                "src/main/resources/training_occupancy_dataset.csv",
+                basePath + "occupancy_training.csv",
                 ",",
                 features,
                 "Occupancy"
 
         );
         var testData= new BufferedDataset(
-                "src/main/resources/test_occupancy_dataset.csv",
+                basePath + "occupancy_test.csv",
                 ",",
                 features,
                 "Occupancy"
 
         );
-        var metric = new Accuracy();
         var model = new PassiveAggressiveBinaryClassifier("PA_1", 0.1, features.length);
+        var metric = new Accuracy();
         var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
-        System.out.println("Accuracy: " + trainer.metric.finalScore);
+        trainer.evaluate(testData);
 
-        trainer.evaluate(new BufferedDataset("src/main/resources/test_occupancy_dataset.csv", ",", features, "Occupancy"));
+        System.out.println();
     }
 
-    public static void seoulBikeExample() {
+    public static void exampleSeoulBike() {
+        System.out.println("Seoul bikes");
+
         var features = new String[] {
                 "temperature",
                 "humidity",
@@ -51,10 +56,35 @@ public class Main {
                 "dummy_winter",
                 "dummy_spring",
                 "dummy_summer",
-                "dummy_autumn"
+                "dummy_autumn",
+                "night",
+                "morning",
+                "afternoon",
+                "evening"
         };
-        var df = new BufferedDataset(
-                "src/main/resources/seoul_bike_dataset.csv",
+        var trainData = new BufferedDataset(
+                basePath + "seoul_bike_train.csv",
+                ",",
+                features,
+                "rented bike count"
+
+        );
+        var testData = new BufferedDataset(
+                basePath + "seoul_bike_test.csv",
+                ",",
+                features,
+                "rented bike count"
+
+        );
+
+        var scaledTrainData = new BufferedDataset(
+                basePath + "seoul_bike_scaled_train.csv",
+                ",",
+                features,
+                "rented bike count"
+        );
+        var scaledTestData = new BufferedDataset(
+                basePath + "seoul_bike_scaled_test.csv",
                 ",",
                 features,
                 "rented bike count"
@@ -63,181 +93,292 @@ public class Main {
 
         System.out.println("Linear model");
         var linearModel = new PassiveAggressiveRegressor("PA", 1.0, features.length, 1.0);
-        var linearTrainer = new SupervisedTrainer(linearModel, df, new MAE());
+        var linearTrainer = new SupervisedTrainer(linearModel, trainData, new MAE());
         linearTrainer.train(null);
-        linearTrainer.evaluate(new BufferedDataset("src/main/resources/seoul_bike_dataset.csv", ",", features, "rented bike count"));
+        linearTrainer.evaluate(testData);
 
-        System.out.println("Kernel model");
+        System.out.println("\nKernel model");
         var kernelModel = new KernelPassiveAggressiveRegressor("PA_2", 1000, features.length, 1.0, new GaussianKernel(1.0));
-        var kernelTrainer = new SupervisedTrainer(kernelModel, df, new MAE());
+        var kernelTrainer = new SupervisedTrainer(kernelModel, scaledTrainData, new MAE());
         kernelTrainer.train(null);
-        kernelTrainer.evaluate(new BufferedDataset("src/main/resources/seoul_bike_dataset.csv", ",", features, "rented bike count"));
+        kernelTrainer.evaluate(scaledTestData);
 
+        System.out.println();
     }
 
-    public static void breastCancerExample() {
+    public static void exampleBreastCancer() {
+
+        System.out.println("Breast cancer");
+
         var features = java.util.stream.IntStream.range(3, 32)
                 .mapToObj(i -> "V" + i)
                 .toArray(String[]::new);
 
-        var df = new BufferedDataset(
-                "src/main/resources/breast_cancer_dataset.csv",
-                ";",
+        var trainData = new BufferedDataset(
+                basePath + "breast_cancer_scaled_train.csv",
+                ",",
+                features,
+                "diagnosis"
+
+        );
+        var testData = new BufferedDataset(
+                basePath + "breast_cancer_scaled_test.csv",
+                ",",
                 features,
                 "diagnosis"
 
         );
         var metric = new Accuracy();
-        var model = new PassiveAggressiveBinaryClassifier("PA_1", 0.7, features.length);
-        var trainer = new SupervisedTrainer(model, df, metric);
+        var model = new PassiveAggressiveBinaryClassifier("PA_1", 5, features.length);
+        var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
-//        trainer.evaluate(new BufferedDataset("src/main/resources/breast_cancer_dataset.csv", ";", features, "diagnosis"));
+        trainer.evaluate(testData);
+
+        System.out.println();
     }
 
     public static void exampleSST2() {
+        System.out.println("Stanford Sentiment Treebank v2");
+
         var features = java.util.stream.IntStream.range(0, 769)
                 .mapToObj(i -> "x" + i)
                 .toArray(String[]::new);
 
-        var df = new BufferedDataset(
-                "src/main/resources/sst2_features_training_dataset.csv",
+        var trainData = new BufferedDataset(
+                basePath + "sst2_features_train.csv",
                 ";",
                 features,
                 "label"
-
+        );
+        var testData = new BufferedDataset(
+                basePath + "sst2_features_test.csv",
+                ";",
+                features,
+                "label"
         );
         var metric = new Accuracy();
-        var model = new PassiveAggressiveBinaryClassifier("PA", 0.0, features.length);
-//        var model = new KernelPassiveAggressiveBinaryClassifier("PA_1", 100, features.length, new GaussianKernel(0.5));
-        var trainer = new SupervisedTrainer(model, df, metric);
+        var model = new PassiveAggressiveBinaryClassifier("PA_1", 1, features.length);
+        var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
-        trainer.evaluate(new BufferedDataset("src/main/resources/sst2_features_test_dataset.csv", ";", features, "label"));
+        trainer.evaluate(testData);
+
+        System.out.println();
     }
 
-    public static void exampleAD() {
+    public static void exampleADFraud() {
+
+        System.out.println("Fraud");
+
         var features = java.util.stream.IntStream.range(1, 30)
                 .mapToObj(i -> "V" + i)
                 .toArray(String[]::new);
 
-        var df = new BufferedDataset(
-                "src/main/resources/fraud_normalized_train.csv",
+        var trainData = new BufferedDataset(
+                basePath + "fraud_scaled_train.csv",
+                ",",
+                features,
+                "class"
+        );
+        var testData = new BufferedDataset(
+                basePath + "fraud_scaled_test.csv",
                 ",",
                 features,
                 "class"
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA_1", 1.0, features.length, 10);
-        var trainer = new AnomalyDetectionTrainer(model, df);
+        var model = new PassiveAggressiveAnomalyDetector("PA_1", 100, features.length, 5);
+        var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
-        System.out.println(Arrays.toString(trainer.model.weights));
-        System.out.println(trainer.model.epsilon);
+//        System.out.println(Arrays.toString(trainer.model.weights));
+//        System.out.println(trainer.model.epsilon);
 
-        trainer.evaluate(
-                new BufferedDataset("src/main/resources/fraud_normalized_test.csv", ",", features, "class"),
-                new Accuracy()
-        );
+        trainer.evaluate(testData, new Accuracy());
     }
 
-    public static void exampleADThyroid() {
-        var features = java.util.stream.IntStream.range(1, 22)
-                .mapToObj(i -> "V" + i)
-                .toArray(String[]::new);
+//    public static void exampleADThyroid() {
+//        var features = java.util.stream.IntStream.range(1, 22)
+//                .mapToObj(i -> "V" + i)
+//                .toArray(String[]::new);
+//
+//        var data = new BufferedDataset(
+//                basePath + "thyroid_normalized_train.csv",
+//                ",",
+//                features,
+//                "class"
+//        );
+//
+//        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 1);
+//        var trainer = new AnomalyDetectionTrainer(model, data);
+//        trainer.train(null);
+//        System.out.println(Arrays.toString(trainer.model.weights));
+//        System.out.println(trainer.model.epsilon);
+//
+//        trainer.evaluate(
+//                new BufferedDataset(basePath + "thyroid_normalized_test.csv", ",", features, "class"),
+//                new Accuracy()
+//        );
+//    }
 
-        var df = new BufferedDataset(
-                "C:/Users/Diego/javaprojects/processed_datasets/thyroid_normalized_train.csv",
+//    public static void exampleADSynthetic() {
+//        var features = new String[] {"x1", "x2"};
+//        var data = new BufferedDataset(
+//                basePath + "synthetic_train_dataset.csv",
+//                ",",
+//                features,
+//                "class"
+//        );
+//
+//        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 100);
+//        var trainer = new AnomalyDetectionTrainer(model, data);
+//        trainer.train(null);
+//        System.out.println(Arrays.toString(trainer.model.weights));
+//        System.out.println(trainer.model.epsilon);
+//
+//        trainer.evaluate(
+//                new BufferedDataset(basePath + "synthetic_test_dataset.csv", ",", features, "class"),
+//                new Accuracy()
+//        );
+//    }
+
+//    public static void exampleADShuttle() {
+//        var features = java.util.stream.IntStream.range(1, 10)
+//                .mapToObj(i -> "V" + i)
+//                .toArray(String[]::new);
+//
+//        var data = new BufferedDataset(
+//                basePath + "shuttle_train.csv",
+//                ",",
+//                features,
+//                "class"
+//        );
+//
+//        var model = new PassiveAggressiveAnomalyDetector("PA", 1, features.length, 10);
+//        var trainer = new AnomalyDetectionTrainer(model, data);
+//        trainer.train(null);
+//        System.out.println(Arrays.toString(trainer.model.weights));
+//        System.out.println(trainer.model.epsilon);
+//
+//        trainer.evaluate(
+//                new BufferedDataset(basePath + "shuttle_test.csv", ",", features, "class"),
+//                new Accuracy()
+//        );
+//    }
+
+    public static void exampleDemand() {
+        var features = new String[] {
+                "demand_lag1",
+                "demand_lag2",
+                "demand_lag3",
+                "demand_lag4",
+//                "solar_exposure_lag1",
+//                "solar_exposure_lag2",
+//                "solar_exposure_lag3",
+//                "min_temp_lag1",
+//                "min_temp_lag2",
+//                "min_temp_lag3",
+//                "max_temp_lag1",
+//                "max_temp_lag2",
+//                "max_temp_lag3",
+//                "rainfall_lag1",
+//                "rainfall_lag2",
+//                "rainfall_lag3",
+//                "rrp_lag1",
+//                "rrp_lag2",
+//                "rrp_lag3",
+//                "dummy_school_day",
+//                "dummy_holiday",
+        };
+        var trainData = new BufferedDataset(
+                basePath + "demand_train.csv",
                 ",",
                 features,
-                "class"
+                "demand"
+
+        );
+        var testData = new BufferedDataset(
+                basePath + "demand_test.csv",
+                ",",
+                features,
+                "demand"
+
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 1);
-        var trainer = new AnomalyDetectionTrainer(model, df);
+        System.out.println("Linear model");
+        var model = new PassiveAggressiveRegressor("PA_1", 1, features.length, 10000);
+        var trainer = new SupervisedTrainer(model, trainData, new MAPE());
         trainer.train(null);
-        System.out.println(Arrays.toString(trainer.model.weights));
-        System.out.println(trainer.model.epsilon);
+        trainer.evaluate(testData);
 
-        trainer.evaluate(
-                new BufferedDataset("C:/Users/Diego/javaprojects/processed_datasets/thyroid_normalized_test.csv", ",", features, "class"),
-                new Accuracy()
-        );
     }
 
-    public static void exampleADSynthetic() {
-        var features = new String[] {"x1", "x2"};
-        var df = new BufferedDataset(
-                "C:/Users/Diego/javaprojects/processed_datasets/synthetic_train_dataset.csv",
+    public static void exampleADPhishing() {
+
+        System.out.println("Phishing");
+
+        var trainData = new BufferedDataset(
+                basePath + "ad_phishing_train.csv",
                 ",",
-                features,
-                "class"
+                "label"
+        );
+        var testData = new BufferedDataset(
+                basePath + "ad_phishing_test.csv",
+                ",",
+                "label"
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 100);
-        var trainer = new AnomalyDetectionTrainer(model, df);
+        var model = new PassiveAggressiveAnomalyDetector("PA_1", 100, trainData.FEATURE_NAMES.length, 1e4);
+        var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
-        System.out.println(Arrays.toString(trainer.model.weights));
-        System.out.println(trainer.model.epsilon);
+//        System.out.println(Arrays.toString(trainer.model.weights));
+//        System.out.println(trainer.model.epsilon);
 
-        trainer.evaluate(
-                new BufferedDataset("C:/Users/Diego/javaprojects/processed_datasets/synthetic_test_dataset.csv", ",", features, "class"),
-                new Accuracy()
-        );
+        trainer.evaluate(testData, new Sensitivity());
+        trainer.evaluate(testData, new Specificity());
+//        System.out.printf("Balanced accuracy: %.2f");
+
+        System.out.println();
     }
 
-    public static void exampleADShuttle() {
-        var features = java.util.stream.IntStream.range(1, 10)
-                .mapToObj(i -> "V" + i)
-                .toArray(String[]::new);
+    public static void exampleBCPhishing() {
+        System.out.println("Phishing");
 
-        var df = new BufferedDataset(
-                "C:/Users/Diego/javaprojects/processed_datasets/shuttle_train.csv",
+        var trainData = new BufferedDataset(
+                basePath + "binary_phishing_train.csv",
                 ",",
-                features,
-                "class"
+                "label"
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA", 1, features.length, 71);
-        var trainer = new AnomalyDetectionTrainer(model, df);
+        var testData = new BufferedDataset(
+                basePath + "binary_phishing_test.csv",
+                ",",
+                "label"
+        );
+
+        var model = new PassiveAggressiveBinaryClassifier("PA_1", 100, trainData.FEATURE_NAMES.length);
+        var metric = new Accuracy();
+        var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
-        System.out.println(Arrays.toString(trainer.model.weights));
-        System.out.println(trainer.model.epsilon);
 
-        trainer.evaluate(
-                new BufferedDataset("C:/Users/Diego/javaprojects/processed_datasets/shuttle_test.csv", ",", features, "class"),
-                new Accuracy()
-        );
+        trainer.evaluate(testData);
+
+        System.out.println();
     }
 
     public static void main(String[] args) {
 
-//        occupancyExample(); // linear binary classification
-//        seoulBikeExample(); // kernel regression
-//        breastCancerExample(); // linear binary classification
-//        exampleSST2();
-//        exampleADThyroid();
-        exampleADShuttle();
+        System.out.println("Binary classification\n");
+        exampleBreastCancer();
+        exampleBCPhishing();
+        exampleOccupancy();
+        exampleSST2();
 
-//        var features =  new String[] {
-//                "LIMIT_BAL", "AGE", "PAY_0", "PAY_2",
-//                "BILL_AMT1", "BILL_AMT2",
-//                "PAY_AMT1", "PAY_AMT2",
-//                "DUMMY_SEX",
-//                "MARR_1", "MARR_0"
-//        };
-//        var df = new BufferedDataset(
-//                "src/main/resources/default_dataset.csv",
-//                ";",
-//                "default"
-//
-//        );
-//        var metric = new Accuracy();
-////        var model = new PassiveAggressiveBinaryClassifier("PA_2", 10, df.getFeatureIds().length);
-//        var model = new KernelPassiveAggressiveBinaryClassifier("PA_2", 0.5, df.getFeatureIds().length, new GaussianKernel(1.0));
-//        var trainer = new SupervisedTrainer(model, df, metric);
-//        trainer.train(null);
+        System.out.println("\nRegression/time series\n");
+        exampleSeoulBike();
+        exampleDemand();
 
-
-
-
+        System.out.println("\nAnomaly detection");
+        exampleADPhishing();
+        exampleADFraud();
     }
 
 }

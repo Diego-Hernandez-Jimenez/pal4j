@@ -1,3 +1,8 @@
+/**
+ * A dataset class designed for online learning scenarios, where the entire dataset is not loaded into memory.
+ * @author Diego Hernández Jiménez
+ */
+
 package pal4j.datautils;
 
 import java.io.BufferedReader;
@@ -5,26 +10,68 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class BufferedDataset {
+
+    /**
+     * Path to dataset.
+     */
     public final String FILE_PATH;
+
+    /**
+     * Field delimiter in the file, usually "," or ";".
+     */
     public final String SEPARATOR;
+
+    /**
+     * Names of predictors or, more generally, features to learn from.
+     */
     public String[] FEATURE_NAMES;
+
+    /**
+     * Name of target variable, used only in supervised setting, but not in anomaly detection training.
+     */
     public String TARGET_NAME;
+
+    /**
+     * Column indices of the features in the dataset.
+     */
     private int[] featureIds;
+
+    /**
+     * Column index of the target variable.
+     */
     private int targetId;
 
+    /**
+     * Constructor for the supervised setting where the user provides both the feature names and the target name.
+     * @param filePath Path to text file.
+     * @param separator Field delimiter in the file.
+     * @param featureNames Names of the features to use as predictors.
+     * @param targetName Name of the target variable.
+     */
     public BufferedDataset(String filePath, String separator, String[] featureNames, String targetName) {
         this.FILE_PATH = filePath;
         this.SEPARATOR = separator;
         setColumnsMetadata(featureNames, targetName);
     }
 
+    /**
+     * Constructor for the supervised setting where the user provides only the target name.
+     * It is assumed that the user wants the remaining fields in the file to be used as features.
+     * @param filePath Path to text file.
+     * @param separator Field delimiter in the file.
+     * @param targetName Name of the target variable.
+     */
     public BufferedDataset(String filePath, String separator, String targetName) {
         this.FILE_PATH = filePath;
         this.SEPARATOR = separator;
         setColumnsMetadata(targetName);
     }
 
-
+    /**
+     * Method to get indices from column names (features and targets). Both the names and the indices are stored in arrays.
+     * @param featureNames Names of the features to use as predictors.
+     * @param targetName Name of the target variable.
+     */
     private void setColumnsMetadata(String[] featureNames, String targetName) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(this.FILE_PATH))) {
@@ -59,6 +106,11 @@ public class BufferedDataset {
 
     }
 
+    /**
+     * Method to get indices from column names (features and targets). Both the names and the indices are stored in arrays.
+     * Feature names are not provided, it is assumed that all columns except targetName are feautes.
+     * @param targetName Name of the target variable.
+     */
     private void setColumnsMetadata(String targetName) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(this.FILE_PATH))) {

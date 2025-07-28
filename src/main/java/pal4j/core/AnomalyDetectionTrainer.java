@@ -72,14 +72,13 @@ public class AnomalyDetectionTrainer {
                 y = Double.parseDouble(values[testData.getTargetId()]);
 
                 var prediction = this.model.predict(this.model.calculateScore(x));
-//                System.out.printf("class %s, dist %s, pred %s\n", y, this.model.calculateScore(x), prediction);
                 metric.accumulate(y, prediction);
 
                 ++nRows;
             }
 
             metric.reduce();
-            System.out.println(metric.finalScore);
+            System.out.printf("Test %s: %.2f\n", metric.getName(), metric.getFinalScore());
 
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());

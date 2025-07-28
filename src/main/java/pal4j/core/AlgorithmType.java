@@ -1,3 +1,7 @@
+/**
+ * Enum with the possible types of Passive-Aggressive algorithms. They basically differ in the way the value of tau is calculated.
+ * See Crammer et al. (2006) for more details.
+ */
 package pal4j.core;
 
 public enum AlgorithmType {

@@ -1,3 +1,7 @@
+/**
+ * High-level trainer class for supervised learning. This class takes a model, dataset, and evaluation metric, and handles the training process end-to-end
+ * @author Diego Hernández Jiménez
+ */
 package pal4j.core;
 
 import pal4j.datautils.BufferedDataset;
@@ -6,11 +10,23 @@ import pal4j.datautils.EvaluationMetric;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class SupervisedTrainer {
 
+    /**
+     * Learning model.
+     */
     public PassiveAggressiveModel model;
+
+    /**
+     * Train/test dataset.
+     */
     public BufferedDataset data;
+
+    /**
+     * Performance metric.
+     */
     public EvaluationMetric metric;
 
 
@@ -24,10 +40,13 @@ public class SupervisedTrainer {
         this.metric = metric;
     }
 
+    /**
+     * Method for online training of supervised Passive-Aggressive models (classifier and regressor).
+     * @param iterations Number of training iterations. If null, training uses the full dataset.
+     */
     public void train(Integer iterations) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(this.data.FILE_PATH))) {
-//        try (BufferedReader br = Files.newBufferedReader(Paths.get(this.data.FILE_PATH))) {
             if (iterations == null) iterations = -1; // by being negative we always satisfy the first part of the while condition
             String line;
             int i = 0;
@@ -54,15 +73,47 @@ public class SupervisedTrainer {
             }
 
             this.metric.reduce();
-            System.out.println(this.metric.finalScore);
+            System.out.printf("Train %s: %.2f\n", this.metric.getName(), this.metric.getFinalScore());
 
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
-//            e.printStackTrace();
         }
 
     }
 
+    /**
+     * Method for model evaluation. The difference with the train method is that the model is "frozen", it's not updated.
+     * @param testData Test dataset.
+     */
+    public void evaluate(BufferedDataset testData) {
+        this.metric.reset();
+        try (BufferedReader br = new BufferedReader(new FileReader(testData.FILE_PATH))) {
+            String line;
+            // Skip the first line (header)
+            br.readLine();
+
+            int[] featureIds = testData.getFeatureIds();
+            double[] x = new double[featureIds.length];
+            double y;
+
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(testData.SEPARATOR);
+                for (int j = 0; j < featureIds.length; j++) x[j] = Double.parseDouble(values[featureIds[j]]);
+                y = Double.parseDouble(values[testData.getTargetId()]);
+
+                var prediction = this.model.predict(this.model.calculateScore(x));
+                this.metric.accumulate(y, prediction);
+            }
+
+            this.metric.reduce();
+            System.out.printf("Test %s: %.2f\n", this.metric.getName(), this.metric.getFinalScore());
+
+        } catch (IOException e) {
+            System.err.println("Error reading the CSV file: " + e.getMessage());
+        }
+    }
+
+//    @Deprecated
 //    public void trainOffline(int epochs) {
 //
 //        List<DataRecord> allLines = new ArrayList<DataRecord>();
@@ -110,35 +161,7 @@ public class SupervisedTrainer {
 //        System.out.println(this.metric.finalScore);
 //    }
 //
-    public void evaluate(BufferedDataset testData) {
-        this.metric.reset();
-        int nRows = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(testData.FILE_PATH))) {
-            String line;
-            // Skip the first line (header)
-            br.readLine();
 
-            int[] featureIds = testData.getFeatureIds();
-            double[] x = new double[featureIds.length];
-            double y;
 
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(testData.SEPARATOR);
-                for (int j = 0; j < featureIds.length; j++) x[j] = Double.parseDouble(values[featureIds[j]]);
-                y = Double.parseDouble(values[testData.getTargetId()]);
-
-                var prediction = this.model.predict(this.model.calculateScore(x));
-                this.metric.accumulate(y, prediction);
-
-                ++nRows;
-            }
-
-            this.metric.reduce();
-            System.out.println(this.metric.finalScore);
-
-        } catch (IOException e) {
-            System.err.println("Error reading the CSV file: " + e.getMessage());
-        }
-    }
 
 }
