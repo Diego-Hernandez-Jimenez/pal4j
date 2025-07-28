@@ -59,11 +59,17 @@ public class VectorOperations {
         return u;
     }
 
-//    public static double[] sum(double[] u, double[] v) {
-//        double[] out = new double[u.length];
-//        for (int i = 0; i < u.length; i++) out[i] = u[i] + v[i];
-//        return out;
-//    }
+    /**
+     * Implements summation of vectors.
+     * @param u First input vector.
+     * @param v Second input vector.
+     * @return The result of the sum.
+     */
+    public static double[] sum(double[] u, double[] v) {
+        double[] out = new double[u.length];
+        for (int i = 0; i < u.length; i++) out[i] = u[i] + v[i];
+        return out;
+    }
 
     /**
      * Implements subtraction of vectors.

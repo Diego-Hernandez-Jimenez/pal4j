@@ -1,3 +1,8 @@
+/**
+ * High-level trainer class for anomaly detection learning (uniclass prediction). This class takes a model, dataset, and evaluation metric, and handles the training process end-to-end
+ * @author Diego Hernández Jiménez
+ */
+
 package pal4j.core;
 
 import pal4j.datautils.BufferedDataset;
@@ -9,7 +14,14 @@ import java.io.IOException;
 
 public class AnomalyDetectionTrainer {
 
+    /**
+     * Learning model.
+     */
     public PassiveAggressiveAnomalyDetector model;
+
+    /**
+     * Train dataset.
+     */
     public BufferedDataset data;
 
     public AnomalyDetectionTrainer(
@@ -20,7 +32,12 @@ public class AnomalyDetectionTrainer {
         this.data = data;
     }
 
+    /**
+     * Method for online training of anomaly detection Passive-Aggressive models.
+     * @param iterations Number of training iterations. If null, training uses the full dataset.
+     */
     public void train(Integer iterations) {
+
         try (BufferedReader br = new BufferedReader(new FileReader(this.data.FILE_PATH))) {
 //        try (BufferedReader br = Files.newBufferedReader(Paths.get(this.data.FILE_PATH))) {
             if (iterations == null) iterations = -1; // by being negative we always satisfy the first part of the while condition
@@ -51,9 +68,14 @@ public class AnomalyDetectionTrainer {
         }
     }
 
+    /**
+     * Method for model evaluation. The difference with the train method is that the model is "frozen", it's not updated.
+     * Also, an evaluation metric is used to assess performance.
+     * @param testData Test dataset.
+     * @param metric Performance metric.
+     */
     public void evaluate(BufferedDataset testData, EvaluationMetric metric) {
 
-        int nRows = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(testData.FILE_PATH))) {
             String line;
             // Skip the first line (header)
@@ -73,8 +95,6 @@ public class AnomalyDetectionTrainer {
 
                 var prediction = this.model.predict(this.model.calculateScore(x));
                 metric.accumulate(y, prediction);
-
-                ++nRows;
             }
 
             metric.reduce();

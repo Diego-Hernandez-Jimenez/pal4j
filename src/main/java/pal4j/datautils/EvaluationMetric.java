@@ -36,6 +36,10 @@ public abstract class EvaluationMetric {
         this.finalScore = 0.0;
     }
 
+    /**
+     * Getter to obtain the metric's name.
+     * @return The name of the performance metric.
+     */
     public abstract String getName();
 
     public double getMetricCumSum() {

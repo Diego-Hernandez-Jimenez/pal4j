@@ -20,7 +20,7 @@ public class SupervisedTrainer {
     public PassiveAggressiveModel model;
 
     /**
-     * Train/test dataset.
+     * Train dataset.
      */
     public BufferedDataset data;
 
