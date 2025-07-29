@@ -91,10 +91,6 @@ public abstract class PassiveAggressiveModel {
     }
 
 
-//    public double[] getWeights() {
-//        return this.weights;
-//    }
-
     /**
      * Setter for tau calculator. Depending on the algorithm's type, the parameter tau (support vector) will be calculated in one way or another.
      * Implementation based on Crammer et al. (2006).

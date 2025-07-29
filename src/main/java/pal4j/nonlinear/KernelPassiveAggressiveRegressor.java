@@ -22,9 +22,9 @@ public class KernelPassiveAggressiveRegressor extends PassiveAggressiveRegressor
     ) {
         super(algorithmTypeName, C, numberOfFeatures, epsilon);
         this.kernel = kernel;
-        this.taus = new ArrayList<Double>();
-        this.observations = new ArrayList<DataRecord>();
-        this.scores = new ArrayList<Double>();
+        this.taus = new ArrayList<>();
+        this.observations = new ArrayList<>();
+        this.scores = new ArrayList<>();
     }
 
 

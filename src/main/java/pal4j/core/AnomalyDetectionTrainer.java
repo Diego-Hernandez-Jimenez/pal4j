@@ -64,7 +64,6 @@ public class AnomalyDetectionTrainer {
 
         } catch (IOException e) {
             System.err.println("Error reading the CSV file: " + e.getMessage());
-//            e.printStackTrace();
         }
     }
 

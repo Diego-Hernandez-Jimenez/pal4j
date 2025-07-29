@@ -30,11 +30,8 @@ public class PolynomialKernel implements MercerKernel {
 
     /**
      * Computes the polynomial kernel value (similarity) between two input vectors.
-     *
      * The polynomial kernel is computed using the formula:
-     *
      *     K(x1, x2) = (x1*x1 + R)^D
-     *
      * @param x1 First input vector.
      * @param x2 Second input vector.
      * @return The computed kernel value, representing the similarity between the input vectors.

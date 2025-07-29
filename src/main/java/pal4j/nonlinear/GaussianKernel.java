@@ -19,22 +19,14 @@ public class GaussianKernel implements MercerKernel {
 
     /**
      * Computes the Gaussian kernel value (similarity) between two input vectors.
-     *
      * The Gaussian kernel is computed using the formula:
-     *
      *     K(x1, x2) = exp(-γ * ||x1 - x2||^2)
-     *
      * @param x1 First input vector.
      * @param x2 Second input vector.
      * @return The computed kernel value, representing the similarity between the input vectors.
      */
     @Override
     public double transform(double[] x1, double[] x2) {
-//        double[] vectorDifference = new double[x1.length];
-//        for (int i = 0; i < vectorDifference.length; i++) {
-//            vectorDifference[i] = x1[i] - x2[i];
-//        }
-//        return Math.exp( -this.GAMMA * Math.pow(VectorOperations.l2Norm(vectorDifference), 2) );
         double[] vectorDifference = VectorOperations.subtract(x1, x2);
         return Math.exp( -this.GAMMA * VectorOperations.dotProduct(vectorDifference, vectorDifference) );
     }

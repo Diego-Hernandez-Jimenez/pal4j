@@ -4,9 +4,6 @@
  */
 package pal4j.datautils;
 
-//import java.util.Arrays;
-//import java.util.stream.IntStream;
-
 public class VectorOperations {
 
     /**

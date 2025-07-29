@@ -8,8 +8,6 @@ package pal4j.core;
 
 import pal4j.datautils.VectorOperations;
 
-import java.util.Arrays;
-
 public class PassiveAggressiveAnomalyDetector extends PassiveAggressiveModel {
 
     /**
