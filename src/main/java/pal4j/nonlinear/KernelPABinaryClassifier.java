@@ -5,13 +5,13 @@
 
 package pal4j.nonlinear;
 
-import pal4j.core.PassiveAggressiveBinaryClassifier;
+import pal4j.core.PABinaryClassifier;
 import pal4j.datautils.DataRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KernelPassiveAggressiveBinaryClassifier extends PassiveAggressiveBinaryClassifier {
+public class KernelPABinaryClassifier extends PABinaryClassifier {
 
     /**
      * Mercer kernel for computing similarity. It allows nonlinear classification.
@@ -35,7 +35,7 @@ public class KernelPassiveAggressiveBinaryClassifier extends PassiveAggressiveBi
      * @param numberOfFeatures Number of features present in the model. It's necessary to initialize the weights vector.
      * @param kernel Mercer kernel for computing similarity.
      */
-    public KernelPassiveAggressiveBinaryClassifier(
+    public KernelPABinaryClassifier(
             String algorithmTypeName,
             double C,
             int numberOfFeatures,

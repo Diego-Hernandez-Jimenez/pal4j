@@ -17,7 +17,7 @@ public class AnomalyDetectionTrainer {
     /**
      * Learning model.
      */
-    public PassiveAggressiveAnomalyDetector model;
+    public PAAnomalyDetector model;
 
     /**
      * Train dataset.
@@ -25,7 +25,7 @@ public class AnomalyDetectionTrainer {
     public BufferedDataset data;
 
     public AnomalyDetectionTrainer(
-            PassiveAggressiveAnomalyDetector model,
+            PAAnomalyDetector model,
             BufferedDataset data
     ) {
         this.model = model;

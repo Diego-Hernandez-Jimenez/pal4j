@@ -4,9 +4,7 @@ package pal4j;
 import pal4j.core.*;
 import pal4j.datautils.*;
 import pal4j.nonlinear.GaussianKernel;
-import pal4j.nonlinear.KernelPassiveAggressiveRegressor;
-
-import java.util.Arrays;
+import pal4j.nonlinear.KernelPARegressor;
 
 public class Main {
     
@@ -31,7 +29,7 @@ public class Main {
                 "Occupancy"
 
         );
-        var model = new PassiveAggressiveBinaryClassifier("PA_1", 0.1, features.length);
+        var model = new PABinaryClassifier("PA_1", 0.1, features.length);
         var metric = new Accuracy();
         var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
@@ -92,13 +90,13 @@ public class Main {
         );
 
         System.out.println("Linear model");
-        var linearModel = new PassiveAggressiveRegressor("PA", 1.0, features.length, 1.0);
+        var linearModel = new PARegressor("PA", 1.0, features.length, 1.0);
         var linearTrainer = new SupervisedTrainer(linearModel, trainData, new MAE());
         linearTrainer.train(null);
         linearTrainer.evaluate(testData);
 
         System.out.println("\nKernel model");
-        var kernelModel = new KernelPassiveAggressiveRegressor("PA_2", 1000, features.length, 1.0, new GaussianKernel(1.0));
+        var kernelModel = new KernelPARegressor("PA_2", 1000, features.length, 1.0, new GaussianKernel(1.0));
         var kernelTrainer = new SupervisedTrainer(kernelModel, scaledTrainData, new MAE());
         kernelTrainer.train(null);
         kernelTrainer.evaluate(scaledTestData);
@@ -129,7 +127,7 @@ public class Main {
 
         );
         var metric = new Accuracy();
-        var model = new PassiveAggressiveBinaryClassifier("PA_1", 5, features.length);
+        var model = new PABinaryClassifier("PA_1", 5, features.length);
         var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
         trainer.evaluate(testData);
@@ -157,7 +155,7 @@ public class Main {
                 "label"
         );
         var metric = new Accuracy();
-        var model = new PassiveAggressiveBinaryClassifier("PA_1", 1, features.length);
+        var model = new PABinaryClassifier("PA_1", 1, features.length);
         var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);
         trainer.evaluate(testData);
@@ -186,7 +184,7 @@ public class Main {
                 "class"
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA_1", 100, features.length, 5);
+        var model = new PAAnomalyDetector("PA_1", 100, features.length, 5);
         var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
 //        System.out.println(Arrays.toString(trainer.model.weights));
@@ -265,6 +263,8 @@ public class Main {
 //    }
 
     public static void exampleDemand() {
+
+        System.out.println("Electricity demand");
         var features = new String[] {
                 "demand_lag1",
                 "demand_lag2",
@@ -303,8 +303,7 @@ public class Main {
 
         );
 
-        System.out.println("Linear model");
-        var model = new PassiveAggressiveRegressor("PA_1", 1, features.length, 10000);
+        var model = new PARegressor("PA_1", 1, features.length, 10000);
         var trainer = new SupervisedTrainer(model, trainData, new MAPE());
         trainer.train(null);
         trainer.evaluate(testData);
@@ -326,7 +325,7 @@ public class Main {
                 "label"
         );
 
-        var model = new PassiveAggressiveAnomalyDetector("PA_1", 100, trainData.FEATURE_NAMES.length, 1e4);
+        var model = new PAAnomalyDetector("PA_1", 100, trainData.FEATURE_NAMES.length, 1e4);
         var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
 //        System.out.println(Arrays.toString(trainer.model.weights));
@@ -354,7 +353,7 @@ public class Main {
                 "label"
         );
 
-        var model = new PassiveAggressiveBinaryClassifier("PA_1", 100, trainData.FEATURE_NAMES.length);
+        var model = new PABinaryClassifier("PA_1", 100, trainData.FEATURE_NAMES.length);
         var metric = new Accuracy();
         var trainer = new SupervisedTrainer(model, trainData, metric);
         trainer.train(null);

@@ -75,7 +75,7 @@ public class BufferedDataset {
     private void setColumnsMetadata(String[] featureNames, String targetName) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(this.FILE_PATH))) {
-            String header = br.readLine().replace(" ", "");
+            String header = br.readLine(); //.replace(" ", "");
             String[] columnNames = header.split(this.SEPARATOR);
             if (columnNames.length == 1) {
                 throw new IllegalArgumentException("The chosen delimiter does not match the one used in the file");
@@ -84,7 +84,7 @@ public class BufferedDataset {
             int[] featureIndices = new int[numberOfFeatures];
             int targetIndex = -1;
             for (int i = 0; i < columnNames.length; i++) {
-                String columnName = columnNames[i];
+                String columnName = columnNames[i].strip();
                 if (columnName.equals(targetName)) {
                     targetIndex = i;
                 }

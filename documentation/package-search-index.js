@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pal4j"},{"l":"pal4j.core"},{"l":"pal4j.datautils"},{"l":"pal4j.nonlinear"}];updateSearchResults();

@@ -7,7 +7,7 @@ package pal4j.core;
 
 import pal4j.datautils.VectorOperations;
 
-public class PassiveAggressiveRegressor extends PassiveAggressiveModel {
+public class PARegressor extends PassiveAggressiveModel {
 
     /**
      * "Tolerance" parameter. Maximum discrepancy allowed when making predictions.
@@ -21,7 +21,7 @@ public class PassiveAggressiveRegressor extends PassiveAggressiveModel {
      * @param numberOfFeatures Number of features present in the model. It's necessary to initialize the weights vector.
      * @param epsilon Tolerance parameter. Maximum discrepancy allowed when making predictions.
      */
-    public PassiveAggressiveRegressor(String algorithmTypeName, double C, int numberOfFeatures, double epsilon) {
+    public PARegressor(String algorithmTypeName, double C, int numberOfFeatures, double epsilon) {
         super(algorithmTypeName, C, numberOfFeatures);
         this.setEpsilon(epsilon);
     }

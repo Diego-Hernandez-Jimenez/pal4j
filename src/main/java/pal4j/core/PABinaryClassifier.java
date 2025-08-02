@@ -7,7 +7,7 @@ package pal4j.core;
 
 import pal4j.datautils.VectorOperations;
 
-public class PassiveAggressiveBinaryClassifier extends PassiveAggressiveModel {
+public class PABinaryClassifier extends PassiveAggressiveModel {
 
     /**
      * Constructor for PA binary classification model. Inherited from PassiveAggressiveModel parent class.
@@ -15,7 +15,7 @@ public class PassiveAggressiveBinaryClassifier extends PassiveAggressiveModel {
      * @param C Aggressiveness parameter. It's used only when the algorithm type is "PA_1" or "PA_2".
      * @param numberOfFeatures Number of features present in the model. It's necessary to initialize the weights vector.
      */
-    public PassiveAggressiveBinaryClassifier(String algorithmTypeName, double C, int numberOfFeatures) {
+    public PABinaryClassifier(String algorithmTypeName, double C, int numberOfFeatures) {
         super(algorithmTypeName, C, numberOfFeatures);
     }
 

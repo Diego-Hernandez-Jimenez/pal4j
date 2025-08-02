@@ -1,19 +1,19 @@
 package pal4j.nonlinear;
 
-import pal4j.core.PassiveAggressiveRegressor;
+import pal4j.core.PARegressor;
 import pal4j.datautils.DataRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KernelPassiveAggressiveRegressor extends PassiveAggressiveRegressor {
+public class KernelPARegressor extends PARegressor {
 
     private MercerKernel kernel;
     public ArrayList<Double> taus;
     public List<DataRecord> observations;
-    public ArrayList<Double> scores;
+    public List<Double> scores;
 
-    public KernelPassiveAggressiveRegressor(
+    public KernelPARegressor(
             String algorithmTypeName,
             double C,
             int numberOfFeatures,

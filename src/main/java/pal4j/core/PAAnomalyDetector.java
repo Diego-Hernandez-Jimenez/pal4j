@@ -8,7 +8,7 @@ package pal4j.core;
 
 import pal4j.datautils.VectorOperations;
 
-public class PassiveAggressiveAnomalyDetector extends PassiveAggressiveModel {
+public class PAAnomalyDetector extends PassiveAggressiveModel {
 
     /**
      * Learned "tolerance" parameter or radius. Maximum discrepancy allowed when making predictions.
@@ -27,7 +27,7 @@ public class PassiveAggressiveAnomalyDetector extends PassiveAggressiveModel {
      * @param numberOfFeatures Number of features present in the model. It's necessary to initialize the weights vector.
      * @param B Upper bound on epsilon, which is the maximum discrepancy allowed when making predictions.
      */
-    public PassiveAggressiveAnomalyDetector(String algorithmTypeName, double C, int numberOfFeatures, double B) {
+    public PAAnomalyDetector(String algorithmTypeName, double C, int numberOfFeatures, double B) {
         super(algorithmTypeName, C, numberOfFeatures + 1);
         this.weights[numberOfFeatures] = B;
         this.setB(B);
@@ -122,6 +122,15 @@ public class PassiveAggressiveAnomalyDetector extends PassiveAggressiveModel {
         }
 //        this.weights[extraFeatureId] = Math.sqrt( Math.pow(this.B, 2) - Math.pow(this.epsilon, 2) );
         this.epsilon = Math.sqrt( Math.pow(this.B, 2) - Math.pow(this.weights[extraFeatureId], 2) );
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format(
+                "Task: Anomaly detection\nPassive Aggressive model type: %s.\nAggressiveness parameter C: %.2f\nEpsilon: %.2f",
+                this.ALGORITHM_TYPE.name, this.getC(), this.epsilon
+        );
     }
 
 }
