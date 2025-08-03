@@ -21,12 +21,12 @@ public class KernelPABinaryClassifier extends PABinaryClassifier {
     /**
      * Tau values associated with each observation. This array grows with training.
      */
-    public List<Double> taus;
+    private List<Double> taus;
 
     /**
      * List of observations encountered during training.
      */
-    public List<DataRecord> observations;
+    private List<DataRecord> observations;
 
     /**
      * Constructor for kernel PA binary classification model. Inherited from PassiveAggressiveBinaryClassifier parent class.

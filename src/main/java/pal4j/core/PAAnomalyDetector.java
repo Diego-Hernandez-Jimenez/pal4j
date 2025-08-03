@@ -13,12 +13,12 @@ public class PAAnomalyDetector extends PassiveAggressiveModel {
     /**
      * Learned "tolerance" parameter or radius. Maximum discrepancy allowed when making predictions.
      */
-    public double epsilon = 0.0;
+    private double epsilon = 0.0;
 
     /**
      * Upper bound on epsilon.
      */
-    public double B;
+    private double B;
 
     /**
      * Constructor of anomaly detector model. Inherited from PassiveAggressiveModel parent class.
@@ -43,6 +43,22 @@ public class PAAnomalyDetector extends PassiveAggressiveModel {
         } else {
             this.B = B;
         }
+    }
+
+    /**
+     * Getter for B.
+     * @return The value of B, value representing upper bound on epsilon.
+     */
+    public double getB() {
+        return this.B;
+    }
+
+    /**
+     * Getter for epsilon.
+     * @return The value of epsilon,the tolerance parameter.
+     */
+    public double getEpsilon() {
+        return this.epsilon;
     }
 
     /**

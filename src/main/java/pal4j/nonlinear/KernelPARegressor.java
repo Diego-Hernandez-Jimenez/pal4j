@@ -9,9 +9,9 @@ import java.util.List;
 public class KernelPARegressor extends PARegressor {
 
     private MercerKernel kernel;
-    public ArrayList<Double> taus;
-    public List<DataRecord> observations;
-    public List<Double> scores;
+    private ArrayList<Double> taus;
+    private List<DataRecord> observations;
+    private List<Double> scores;
 
     public KernelPARegressor(
             String algorithmTypeName,
