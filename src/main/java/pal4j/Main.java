@@ -8,7 +8,7 @@ import pal4j.nonlinear.KernelPARegressor;
 
 public class Main {
     
-    public static final String basePath = "C:/Users/Diego/javaprojects/processed_datasets/";
+    public static final String basePath = "processed_datasets/";
 
     public static void exampleOccupancy() {
 
@@ -187,80 +187,8 @@ public class Main {
         var model = new PAAnomalyDetector("PA_1", 100, features.length, 5);
         var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
-//        System.out.println(Arrays.toString(trainer.model.weights));
-//        System.out.println(trainer.model.epsilon);
-
         trainer.evaluate(testData, new Accuracy());
     }
-
-//    public static void exampleADThyroid() {
-//        var features = java.util.stream.IntStream.range(1, 22)
-//                .mapToObj(i -> "V" + i)
-//                .toArray(String[]::new);
-//
-//        var data = new BufferedDataset(
-//                basePath + "thyroid_normalized_train.csv",
-//                ",",
-//                features,
-//                "class"
-//        );
-//
-//        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 1);
-//        var trainer = new AnomalyDetectionTrainer(model, data);
-//        trainer.train(null);
-//        System.out.println(Arrays.toString(trainer.model.weights));
-//        System.out.println(trainer.model.epsilon);
-//
-//        trainer.evaluate(
-//                new BufferedDataset(basePath + "thyroid_normalized_test.csv", ",", features, "class"),
-//                new Accuracy()
-//        );
-//    }
-
-//    public static void exampleADSynthetic() {
-//        var features = new String[] {"x1", "x2"};
-//        var data = new BufferedDataset(
-//                basePath + "synthetic_train_dataset.csv",
-//                ",",
-//                features,
-//                "class"
-//        );
-//
-//        var model = new PassiveAggressiveAnomalyDetector("PA_1", 0.1, features.length, 100);
-//        var trainer = new AnomalyDetectionTrainer(model, data);
-//        trainer.train(null);
-//        System.out.println(Arrays.toString(trainer.model.weights));
-//        System.out.println(trainer.model.epsilon);
-//
-//        trainer.evaluate(
-//                new BufferedDataset(basePath + "synthetic_test_dataset.csv", ",", features, "class"),
-//                new Accuracy()
-//        );
-//    }
-
-//    public static void exampleADShuttle() {
-//        var features = java.util.stream.IntStream.range(1, 10)
-//                .mapToObj(i -> "V" + i)
-//                .toArray(String[]::new);
-//
-//        var data = new BufferedDataset(
-//                basePath + "shuttle_train.csv",
-//                ",",
-//                features,
-//                "class"
-//        );
-//
-//        var model = new PassiveAggressiveAnomalyDetector("PA", 1, features.length, 10);
-//        var trainer = new AnomalyDetectionTrainer(model, data);
-//        trainer.train(null);
-//        System.out.println(Arrays.toString(trainer.model.weights));
-//        System.out.println(trainer.model.epsilon);
-//
-//        trainer.evaluate(
-//                new BufferedDataset(basePath + "shuttle_test.csv", ",", features, "class"),
-//                new Accuracy()
-//        );
-//    }
 
     public static void exampleDemand() {
 
@@ -328,12 +256,10 @@ public class Main {
         var model = new PAAnomalyDetector("PA_1", 100, trainData.FEATURE_NAMES.length, 1e4);
         var trainer = new AnomalyDetectionTrainer(model, trainData);
         trainer.train(null);
-//        System.out.println(Arrays.toString(trainer.model.weights));
-//        System.out.println(trainer.model.epsilon);
 
+        // not ideal, it would be best to calculate both metrics in the same pass
         trainer.evaluate(testData, new Sensitivity());
         trainer.evaluate(testData, new Specificity());
-//        System.out.printf("Balanced accuracy: %.2f");
 
         System.out.println();
     }
