@@ -1,3 +1,5 @@
+# install.packages('data.table')
+
 minmax_scale <- function(x, na.rm = TRUE) {
   return((x - min(x)) /(max(x) - min(x)))
 }
@@ -206,23 +208,23 @@ data.table::fwrite(dt_test, file.path(out_path, 'seoul_bike_test.csv'))
 
 
 features <- c(
-  "temperature",
-  "humidity",
-  "wind speed",
-  "visibility",
-  "solar radiation",
-  "rainfall",
-  "snowfall",
-  "dummy_holiday",
-  "dummy_functioning_day",
-  "dummy_winter",
-  "dummy_spring",
-  "dummy_summer",
-  "dummy_autumn",
-  "night",
-  "morning",
-  "afternoon",
-  "evening"
+  'temperature',
+  'humidity',
+  'wind speed',
+  'visibility',
+  'solar radiation',
+  'rainfall',
+  'snowfall',
+  'dummy_holiday',
+  'dummy_functioning_day',
+  'dummy_winter',
+  'dummy_spring',
+  'dummy_summer',
+  'dummy_autumn',
+  'night',
+  'morning',
+  'afternoon',
+  'evening'
 )
 dt[, (features) := lapply(.SD, minmax_scale), .SDcols=features ]
 dt_train <- dt[1:n_train]
