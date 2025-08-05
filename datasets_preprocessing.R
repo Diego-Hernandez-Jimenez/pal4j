@@ -235,7 +235,7 @@ data.table::fwrite(dt_test, file.path(out_path, 'seoul_bike_scaled_test.csv'))
 
 ##############################################
 
-# anomaly detection https://github.com/GuansongPang/ADRepository-Anomaly-detection-datasets/blob/main/numerical%20data/DevNet%20datasets/creditcardfraud_normalised.tar.xz
+# anomaly detection credit fraud https://github.com/GuansongPang/ADRepository-Anomaly-detection-datasets/blob/main/numerical%20data/DevNet%20datasets/creditcardfraud_normalised.tar.xz
 
 dt <- data.table::fread(file.path(base_path, 'creditcardfraud_normalised.csv'))
 

@@ -34,6 +34,11 @@ A Maven package is not available yet. To use the library, clone the repo and com
 
 #### Sample Usage
 ```java
+import pal4j.core.PABinaryClassifier;
+import pal4j.core.SupervisedTrainer;
+import pal4j.datautils.BufferedDataset;
+import pal4j.datautils.Accuracy;
+
 var features = new String[] {"x1", "x2"};
 var target = "y";
 var delimiter = ",";
@@ -62,6 +67,32 @@ var trainer = new SupervisedTrainer(model, trainData, metric);
 trainer.train(null); // use the full dataset
 trainer.evaluate(testData);
 ```
+
+### Performance
+
+The Passive-Aggressive models in this package have been evaluated across a range of tasks using several publicly available datasets.
+
+**Binary Classification:**
+
+* [Phishing](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset) (detecting malicious URLs)
+* [Breast Cancer](https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original)
+* [Occupancy Detection](https://archive.ics.uci.edu/dataset/357/occupancy+detection) 
+* [Stanford Sentiment Treebank (SST-2)](https://huggingface.co/datasets/stanfordnlp/sst2) (binary sentiment classification of text)
+
+**Regression / Time Series:**
+
+* [Electricity Demand](https://www.kaggle.com/datasets/aramacus/electricity-demand-in-victoria-australia?select=complete_dataset.csv)
+* [Seoul Bike Sharing Demand](https://archive.ics.uci.edu/datasets?search=Seoul%20Bike%20Sharing%20Demand)
+
+**Anomaly Detection:**
+
+* [Credit Card Fraud Detection](https://github.com/GuansongPang/ADRepository-Anomaly-detection-datasets/blob/main/numerical%20data/DevNet%20datasets/creditcardfraud_normalised.tar.xz)
+* [Phishing (repurposed)](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset) – Treated as an anomaly detection problem in this case
+
+The datasets themselves are not included in this repository, but scripts are provided to help you preprocess them.
+
+While the current benchmarks demonstrate the applicability of Passive-Aggressive models to classification, regression, and anomaly detection tasks, 
+their full potential—particularly in true streaming contexts—has not yet been fully explored. 
 
 
 ---
