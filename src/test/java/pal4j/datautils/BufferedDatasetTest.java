@@ -44,25 +44,4 @@ public class BufferedDatasetTest {
         assertEquals(18, data.getTargetId());
     }
 
-//    @Test
-//    @Order(3)
-//    @Tag("NoFile")
-//    @DisplayName("File not found")
-//    public void checkFilePath() {
-//        try {
-//            var data = new BufferedDataset(
-//                    "C:\\Users\\Diego\\javaprojects\\PassiveAggresive\\src\\test\\resources\\non_existent.csv",
-//                    ";",
-//                    new String[] {"x0", "x5", "x10"},
-//                    "x18"
-//            );
-//        } catch (Exception e) {
-//            assertEquals(
-//                    "Error reading the CSV file: C:\\Users\\Diego\\javaprojects\\PassiveAggresive\\src\\test\\resources\\non_existent.csv (El sistema no puede encontrar el archivo especificado)",
-//                    e.getMessage()
-//            );
-//        }
-//
-//    }
-
 }
