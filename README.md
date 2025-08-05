@@ -87,7 +87,7 @@ The Passive-Aggressive models in this package have been evaluated across a range
 **Anomaly Detection:**
 
 * [Credit Card Fraud Detection](https://github.com/GuansongPang/ADRepository-Anomaly-detection-datasets/blob/main/numerical%20data/DevNet%20datasets/creditcardfraud_normalised.tar.xz)
-* [Phishing (repurposed)](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset) – Treated as an anomaly detection problem in this case
+* [Phishing](https://archive.ics.uci.edu/dataset/967/phiusiil+phishing+url+dataset) (treated as an anomaly detection problem in this case)
 
 The datasets themselves are not included in this repository, but scripts are provided to help you preprocess them.
 
